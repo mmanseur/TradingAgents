@@ -716,7 +716,17 @@ def save_report_to_disk(final_state, ticker: str, save_path: Path):
 
     # Write consolidated report
     header = f"# Trading Analysis Report: {ticker}\n\nGenerated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
-    (save_path / "complete_report.md").write_text(header + "\n\n".join(sections), encoding="utf-8")
+    md_content = header + "\n\n".join(sections)
+    (save_path / "complete_report.md").write_text(md_content, encoding="utf-8")
+
+    import re
+    txt_content = re.sub(r"#{1,6}\s*", "", md_content)
+    txt_content = re.sub(r"\*{1,3}([^*]+)\*{1,3}", r"\1", txt_content)
+    txt_content = re.sub(r"`{1,3}([^`]*)`{1,3}", r"\1", txt_content)
+    txt_content = re.sub(r"!\[.*?\]\(.*?\)", "", txt_content)
+    txt_content = re.sub(r"\[([^\]]+)\]\([^\)]+\)", r"\1", txt_content)
+    (save_path / "complete_report.txt").write_text(txt_content, encoding="utf-8")
+
     return save_path / "complete_report.md"
 
 
