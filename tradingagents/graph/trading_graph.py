@@ -146,9 +146,7 @@ class TradingAgentsGraph:
                 kwargs["reasoning_effort"] = reasoning_effort
 
         elif provider == "anthropic":
-            effort = self.config.get("anthropic_effort")
-            if effort:
-                kwargs["effort"] = effort
+            pass  # effort param only on extended-thinking models; not passed here
 
         return kwargs
 

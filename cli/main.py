@@ -588,13 +588,7 @@ def get_user_selections():
         )
         reasoning_effort = ask_openai_reasoning_effort()
     elif provider_lower == "anthropic":
-        console.print(
-            create_question_box(
-                "Step 8: Effort Level",
-                "Configure Claude effort level"
-            )
-        )
-        anthropic_effort = ask_anthropic_effort()
+        pass  # effort param not supported on standard Anthropic models
 
     return {
         "ticker": selected_ticker,
