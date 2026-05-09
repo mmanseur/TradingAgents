@@ -1182,6 +1182,17 @@ def run_analysis(checkpoint: bool = False):
             report_file = save_report_to_disk(final_state, selections["ticker"], save_path)
             console.print(f"\n[green]✓ Report saved to:[/green] {save_path.resolve()}")
             console.print(f"  [dim]Complete report:[/dim] {report_file.name}")
+            # Auto-commit and push report to myfork
+            try:
+                import subprocess
+                rel_path = save_path.relative_to(Path.cwd())
+                subprocess.run(["git", "add", str(rel_path)], check=True)
+                commit_msg = f"Rapport {selections['ticker']} {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}"
+                subprocess.run(["git", "commit", "-m", commit_msg], check=True)
+                subprocess.run(["git", "push", "myfork", "main"], check=True)
+                console.print("[green]✓ Rapport committé et pushé vers myfork/main[/green]")
+            except Exception as git_err:
+                console.print(f"[yellow]Git push échoué: {git_err}[/yellow]")
         except Exception as e:
             console.print(f"[red]Error saving report: {e}[/red]")
 
