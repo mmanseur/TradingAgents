@@ -63,7 +63,8 @@ def load_ohlcv(symbol: str, curr_date: str) -> pd.DataFrame:
     today_date = pd.Timestamp.today()
     start_date = today_date - pd.DateOffset(years=5)
     start_str = start_date.strftime("%Y-%m-%d")
-    end_str = today_date.strftime("%Y-%m-%d")
+    # yfinance end is exclusive, so add 1 day to include today's data
+    end_str = (today_date + pd.DateOffset(days=1)).strftime("%Y-%m-%d")
 
     os.makedirs(config["data_cache_dir"], exist_ok=True)
     data_file = os.path.join(
