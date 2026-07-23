@@ -1273,8 +1273,8 @@ def run_analysis(checkpoint: bool | None = None):
             console.print(f"[red]Error saving report: {e}[/red]")
 
     # Prompt to display full report
-    display_choice = typer.prompt("\nDisplay full report on screen?", default="Y").strip().upper()
-    if display_choice in ("Y", "YES", ""):
+    display_choice = typer.prompt("\nDisplay full report on screen?", default="N").strip().upper()
+    if display_choice in ("Y", "YES"):
         display_complete_report(final_state)
 
 
